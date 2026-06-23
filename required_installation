@@ -1,0 +1,27 @@
+# Project installation instructions
+
+1. Install Python 3.10+ (the project has a `.venv` virtual environment already configured for Python 3.14).
+2. Create and activate a virtual environment (if not already active):
+
+   python -m venv .venv
+   .venv\Scripts\Activate
+
+3. Upgrade pip and install dependencies:
+
+   python -m pip install --upgrade pip
+   pip install -r requirements.txt
+
+4. Ensure PostgreSQL is running and the database is available:
+
+   DATABASE_URL = "postgresql://postgres:1353@localhost/hackathon"
+
+   - Create the `hackathon` database if it does not exist.
+   - Update `app/database.py` if you need a different user, password, host, port, or database name.
+
+5. Run the FastAPI app locally:
+
+   uvicorn app.main:app --reload
+
+6. Open the API docs in your browser:
+
+   http://127.0.0.1:8000/docs
