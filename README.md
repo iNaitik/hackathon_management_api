@@ -47,7 +47,7 @@ This project was built to practice backend engineering concepts beyond basic CRU
 
 ### Core Entities & Relationships
 
-```text
+
 User
  │
  ├── Team_Member ──── Team ──── Hackathon
