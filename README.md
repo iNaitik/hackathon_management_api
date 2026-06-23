@@ -1,16 +1,10 @@
-Here is the final, finalized version. The API endpoints are broken out into clean lists, the setup instructions flow better, the wording is precise, and the future improvements are realistic.
-
-Ship it, push the code, and move on to your next project.
-
----
-
-```markdown
 # 🚀 Hackathon Management API
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688.svg)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-336791.svg)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red.svg)
+![Alembic](https://img.shields.io/badge/Alembic-Migrations-green.svg)
 
 A production-style backend API built with FastAPI and PostgreSQL to manage hackathons from team formation to project submissions, voting, and leaderboard generation.
 
@@ -63,106 +57,86 @@ User
  │                      │
  └──────────── Vote ◄───┘
 
-```
+One Hackathon → Many Teams
 
-* **One** Hackathon → **Many** Teams
-* **One** Team → **One** Submission
-* **Many** Users ↔ **Many** Teams
-* **One** Submission → **Many** Votes
+One Team → One Submission
 
-## 📡 API Endpoints
+Many Users ↔ Many Teams
 
-### Authentication
+One Submission → Many Votes
 
-* `POST` `/register`
-* `POST` `/login`
+📡 API Endpoints
+Authentication
+POST /register
 
-### Hackathons
+POST /login
 
-* `POST` `/hackathons`
+Hackathons
+POST /hackathons
 
-### Teams
+Teams
+POST /teams
 
-* `POST` `/teams`
-* `POST` `/teams/{id}/join`
+POST /teams/{id}/join
 
-### Submissions
+Submissions
+POST /teams/{team_id}/submit
 
-* `POST` `/teams/{team_id}/submit`
+Voting
+POST /submissions/{submission_id}/vote
 
-### Voting
+Leaderboard
+GET /hackathons/{hackathon_id}/leaderboard
 
-* `POST` `/submissions/{submission_id}/vote`
-
-### Leaderboard
-
-* `GET` `/hackathons/{hackathon_id}/leaderboard`
-
-## 🚀 Getting Started
-
-### Clone Repository
-
-```bash
+🚀 Getting Started
+Clone Repository
+Bash
 git clone [https://github.com/iNaitik/hackathon_management_api.git](https://github.com/iNaitik/hackathon_management_api.git)
 cd hackathon_management_api
-
-```
-
-### Create Virtual Environment
-
-```bash
+Create Virtual Environment
+Bash
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 # Linux/Mac: source .venv/bin/activate
-
-```
-
-### Install Dependencies
-
-```bash
+Install Dependencies
+Bash
 pip install -r requirements.txt
+Configure Environment Variables
+Create a .env file:
 
-```
-
-### Configure Environment Variables
-
-Create a `.env` file:
-
-```env
+Code snippet
 DATABASE_URL=postgresql://username:password@localhost/hackathon
 SECRET_KEY=your_secret_key
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
-
-```
-
-### Run Migrations
-
-```bash
+Run Migrations
+Bash
 alembic upgrade head
-
-```
-
-### Start Server
-
-```bash
+Start Server
+Bash
 fastapi dev
+API Documentation
+FastAPI automatically generates interactive documentation. Once the server is running, visit:
 
-```
+Swagger UI: http://127.0.0.1:8000/docs
 
-## 🔮 Future Improvements
+🔮 Future Improvements
+Judge Roles & Evaluation System
 
-* Judge Roles & Evaluation System
-* Admin Dashboard
-* Team Leave Functionality
-* Docker Deployment
-* Automated Testing with Pytest
+Admin Dashboard
 
-## 👨‍💻 Author
+Team Leave Functionality
 
-**Naitik**
+Docker Deployment
+
+Automated Testing with Pytest
+
+👨‍💻 Author
+Naitik
+
 Built as a backend engineering project to explore FastAPI, PostgreSQL, SQLAlchemy, JWT Authentication, and Alembic Migrations.
 
-```
 
-```
+I kept "Docker Deployment" in the Future Improvements because wrapping this in a container is the logical next step for your backend progression anyway. 
+
+Push the code, commit this README, add the bullet points to your resume, and shut this project down. You have squeezed the learning value out of it. Start scoping the ML project immediately.
