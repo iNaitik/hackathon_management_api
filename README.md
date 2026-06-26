@@ -1,16 +1,17 @@
 # Hackathon Management API
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.12-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688.svg)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15%2B-336791.svg)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791.svg)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red.svg)
 ![Alembic](https://img.shields.io/badge/Alembic-Migrations-green.svg)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)
 
 A production-style backend API built with FastAPI and PostgreSQL for managing hackathons, including team formation, project submissions, voting, and leaderboard generation.
 
 ## Project Goal
 
-This project was built to practice backend engineering concepts beyond basic CRUD operations, including authentication, relational database design, SQL aggregations, schema migrations, and business rule enforcement.
+This project was built to practice backend engineering concepts beyond basic CRUD operations, including authentication, relational database design, SQL aggregations, schema migrations, Docker-based development, and business rule enforcement.
 
 ## Features
 
@@ -52,17 +53,25 @@ This project was built to practice backend engineering concepts beyond basic CRU
 - Calculate vote statistics using SQL aggregations
 - Generate real-time leaderboards
 
+### Dockerized Development
+
+- Dockerfile for containerizing the FastAPI application
+- Docker Compose setup for the API and PostgreSQL database
+- Persistent PostgreSQL storage using Docker volumes
+- Environment-based configuration using `.env`
+
 ## Tech Stack
 
 | Category | Technology |
 | --- | --- |
 | Backend Framework | FastAPI |
-| Database | PostgreSQL |
+| Database | PostgreSQL 16 |
 | ORM | SQLAlchemy |
 | Authentication | JWT |
 | Validation | Pydantic |
 | Migrations | Alembic |
-| Language | Python |
+| Containerization | Docker, Docker Compose |
+| Language | Python 3.12 |
 
 ## Key Concepts Demonstrated
 
@@ -74,6 +83,8 @@ This project was built to practice backend engineering concepts beyond basic CRU
 - REST API development
 - Business logic validation
 - Dependency injection with FastAPI
+- Dockerized backend development
+- PostgreSQL service orchestration with Docker Compose
 
 ## API Endpoints
 
@@ -117,12 +128,74 @@ This project was built to practice backend engineering concepts beyond basic CRU
 
 ## Getting Started
 
+### Prerequisites
+
+Install the following tools before running the project:
+
+- [Git](https://git-scm.com/)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
 ### Clone the Repository
 
 ```bash
 git clone https://github.com/iNaitik/hackathon_management_api.git
 cd hackathon_management_api
 ```
+
+## Run with Docker
+
+Docker is the recommended way to run this project because it starts both the FastAPI application and PostgreSQL database together.
+
+### Create Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+DATABASE_URL=postgresql://postgres:1353@postgres:5432/hackathon
+SECRET_KEY=your_secret_key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+```
+
+The hostname `postgres` is the database service name defined in `docker-compose.yml`.
+
+### Build and Start Containers
+
+```bash
+docker compose up --build
+```
+
+This starts:
+
+- FastAPI application on `http://127.0.0.1:8000`
+- PostgreSQL database on port `5432`
+
+### Run Database Migrations
+
+In a separate terminal, run:
+
+```bash
+docker compose exec api alembic upgrade head
+```
+
+### Stop Containers
+
+```bash
+docker compose down
+```
+
+### Stop Containers and Remove Database Volume
+
+Use this only when you want to reset the database completely:
+
+```bash
+docker compose down -v
+```
+
+## Local Development Without Docker
+
+If you prefer running the project directly on your machine, install Python and PostgreSQL locally.
 
 ### Create a Virtual Environment
 
@@ -155,7 +228,7 @@ pip install -r requirements.txt
 Create a `.env` file in the project root:
 
 ```env
-DATABASE_URL=postgresql://username:password@localhost/hackathon
+DATABASE_URL=postgresql://username:password@localhost:5432/hackathon
 SECRET_KEY=your_secret_key
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
@@ -170,7 +243,7 @@ alembic upgrade head
 ### Start the Development Server
 
 ```bash
-fastapi dev
+uvicorn app.main:app --reload
 ```
 
 ## API Documentation
@@ -180,17 +253,24 @@ FastAPI automatically generates interactive API documentation after the server s
 - Swagger UI: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 - ReDoc: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
 
+## Docker Services
+
+| Service | Description | Port |
+| --- | --- | --- |
+| `api` | FastAPI backend application | `8000` |
+| `postgres` | PostgreSQL database | `5432` |
+
 ## Future Improvements
 
 - Judge roles and evaluation system
 - Admin management features
 - Team leave functionality
-- Docker deployment
 - Automated testing with Pytest
 - CI/CD integration
+- Production deployment configuration
 
 ## Author
 
 **Naitik**
 
-Built as a backend engineering project to explore FastAPI, PostgreSQL, SQLAlchemy, JWT authentication, and Alembic migrations.
+Built as a backend engineering project to explore FastAPI, PostgreSQL, SQLAlchemy, JWT authentication, Alembic migrations, and Docker-based development.
