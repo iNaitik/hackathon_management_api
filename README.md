@@ -70,7 +70,7 @@ This project was built to practice backend engineering concepts beyond basic CRU
 | Authentication | JWT |
 | Validation | Pydantic |
 | Migrations | Alembic |
-| Containerization | Docker, Docker Compose |
+| Containerization | Docker |
 | Language | Python 3.12 |
 
 ## Key Concepts Demonstrated
@@ -134,7 +134,6 @@ Install the following tools before running the project:
 
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
 
 ### Clone the Repository
 
