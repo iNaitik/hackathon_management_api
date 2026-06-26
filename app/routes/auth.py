@@ -35,5 +35,5 @@ async def login(user:schemas.UserLogin, db:Session = Depends(get_db)):
     }
 
 @router.get("/")
-async def me(current_user = Depends(oauth2.get_current_user)):
-    return current_user
+async def me():
+    return "Welcome Buddy"
