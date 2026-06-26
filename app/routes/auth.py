@@ -34,6 +34,6 @@ async def login(user:schemas.UserLogin, db:Session = Depends(get_db)):
         "token_type": "bearer"
     }
 
-@router.get("/me")
+@router.get("/")
 async def me(current_user = Depends(oauth2.get_current_user)):
     return current_user
