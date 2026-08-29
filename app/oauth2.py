@@ -27,10 +27,9 @@ def verify_access_token(token:str, credentials_exception):
         user_id = payload.get("user_id")
         if user_id is None:
             raise credentials_exception
-        token_data = schemas.TokenData(user_id = user_id)
-    except JWTError as e:
+        return user_id
+    except JWTError:
         raise credentials_exception
-    return token_data
 
 def get_current_user(token:str = Depends(oauth2_scheme), db:Session = Depends(get_db)):
 
@@ -38,8 +37,8 @@ def get_current_user(token:str = Depends(oauth2_scheme), db:Session = Depends(ge
                                         detail="Could not validate credentials",
                                         headers={"WWW-Authenticate": "Bearer"})
     
-    token_data = verify_access_token(token, credentials_exception)
-    user = db.query(models.User).filter(models.User.id == token_data.user_id).first()
+    user_id = verify_access_token(token, credentials_exception)
+    user = db.query(models.User).filter(models.User.id == user_id).first()
     if user is None:
         raise credentials_exception
     return user
