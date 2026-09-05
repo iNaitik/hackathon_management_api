@@ -313,7 +313,6 @@ This is separate from local development (above), which continues to run via Dock
 - Judge roles and evaluation system
 - Admin management features
 - Team leave functionality
-- Automated testing with Pytest
 - CI/CD integration
 
 ## Author
