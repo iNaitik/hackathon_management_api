@@ -259,6 +259,29 @@ FastAPI automatically generates interactive API documentation after the server s
 | `api` | FastAPI backend application | `8000` |
 | `postgres` | PostgreSQL database | `5432` |
 
+## Deployment
+
+The application is publicly deployed as a Docker-based Web Service on **Render**, with **Render PostgreSQL** as the production database.
+
+Production architecture:
+
+```
+GitHub
+   ↓
+Render Docker Web Service
+   ↓
+FastAPI / Uvicorn
+   ↓
+Render PostgreSQL
+```
+
+Database migrations (`alembic upgrade head`) are applied automatically during container startup, before the FastAPI/Uvicorn server starts.
+
+- **Live API:** [https://hackathon-management-api-sdqt.onrender.com](https://hackathon-management-api-sdqt.onrender.com)
+- **Swagger/OpenAPI docs:** [https://hackathon-management-api-sdqt.onrender.com/docs](https://hackathon-management-api-sdqt.onrender.com/docs)
+
+This is separate from local development (above), which continues to run via Docker Compose with its own PostgreSQL container.
+
 ## Future Improvements
 
 - Judge roles and evaluation system
@@ -266,7 +289,6 @@ FastAPI automatically generates interactive API documentation after the server s
 - Team leave functionality
 - Automated testing with Pytest
 - CI/CD integration
-- Production deployment configuration
 
 ## Author
 
