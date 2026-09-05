@@ -245,6 +245,32 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
+## Testing
+
+The test suite uses an isolated SQLite database and does not require Docker or PostgreSQL.
+
+### Install Pytest
+
+```bash
+pip install pytest
+```
+
+### Run Tests
+
+On Windows:
+
+```powershell
+.venv\Scripts\Activate.ps1
+pytest
+```
+
+On Linux or macOS:
+
+```bash
+source .venv/bin/activate
+pytest
+```
+
 ## API Documentation
 
 FastAPI automatically generates interactive API documentation after the server starts:
