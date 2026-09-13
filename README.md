@@ -287,19 +287,33 @@ FastAPI automatically generates interactive API documentation after the server s
 
 ## Deployment
 
-The application is publicly deployed as a Docker-based Web Service on **Render**, with **Render PostgreSQL** as the production database.
+The application is publicly deployed as a Docker-based Web Service on **Render**, with **Render PostgreSQL** as the production database. Render pulls the prebuilt application image from Docker Hub rather than building the application directly from the GitHub repository.
 
 Production architecture:
 
 ```
+Developer
+   ↓
 GitHub
    ↓
-Render Docker Web Service
+GitHub Actions CI
    ↓
-FastAPI / Uvicorn
+Run Tests
    ↓
-Render PostgreSQL
+Docker Build
+   ↓
+Docker Hub
+   ↓
+GitHub Actions CD
+   ↓
+Render Deploy Hook
+   ↓
+Render
+   ↓
+FastAPI + Render PostgreSQL
 ```
+
+CI runs on pushes and pull requests. Pull requests run CI and pytest but do not push the production Docker image or trigger deployment. A push to `master` builds and publishes `<DOCKER_USERNAME>/hackathon_management_api:latest` to Docker Hub after CI succeeds, then GitHub Actions triggers the Render Deploy Hook. Failed tests stop the pipeline and prevent production deployment.
 
 Database migrations (`alembic upgrade head`) are applied automatically during container startup, before the FastAPI/Uvicorn server starts.
 
@@ -313,7 +327,6 @@ This is separate from local development (above), which continues to run via Dock
 - Judge roles and evaluation system
 - Admin management features
 - Team leave functionality
-- CI/CD integration
 
 ## Author
 
