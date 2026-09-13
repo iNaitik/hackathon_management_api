@@ -8,7 +8,7 @@ def test_register_returns_user_without_password(client):
     )
 
     assert response.status_code == 200
-    assert response.json()["email"] == "new1@example.com"
+    assert response.json()["email"] == "new@example.com"
     assert "password" not in response.json()
 
 
