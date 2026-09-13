@@ -8,7 +8,7 @@ router = APIRouter(
 )   
 
 @router.get("/hackathons", response_model=list[schemas.HackathonOut])
-async def get_hackahons(db: Session = Depends(get_db),
+async def get_hackathons(db: Session = Depends(get_db),
                         current_user = Depends(oauth2.get_current_user)):
     hack_details = db.query(models.Hackathon).all()
  
