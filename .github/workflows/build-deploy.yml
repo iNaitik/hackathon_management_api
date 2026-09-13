@@ -1,5 +1,5 @@
 name: Build and Deploy
-on:[push, pull_request]
+on: [push, pull_request]
 jobs:
   job1:
     environment:
@@ -45,9 +45,5 @@ jobs:
         run: pytest
 
       - name: Docker Setup Buildx
-        uses: docker/setup-buildx-action@v4.3.0
-        with:
-          context: .
-          push: false
-          tags: hackathon-api:latest
+        uses: docker/setup-buildx-action@v3
         
