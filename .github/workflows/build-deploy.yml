@@ -1,7 +1,7 @@
 name: Build and Deploy
 on: [push, pull_request]
 jobs:
-  job1:
+  CI:
     environment:
       name: Testing
     env:
@@ -60,4 +60,15 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/hackathon_management_api:latest
+  CD:
+    needs: CI
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment:
+      name: Production
+    steps:
+      - name: Deploy to Render
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+        
+
         
