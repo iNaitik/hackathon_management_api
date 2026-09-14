@@ -15,7 +15,7 @@ def test_register_returns_user_without_password(client):
 def test_login_rejects_invalid_password(client, user):
     response = client.post(
         "/login",
-        json={"email": user["email"], "password": "wrong-password"},
+        data={"username": user["email"], "password": "wrong-password"},
     )
 
     assert response.status_code == 403
@@ -40,7 +40,7 @@ def test_register_rejects_missing_required_input(client):
 def test_login_rejects_nonexistent_user(client):
     response = client.post(
         "/login",
-        json={"email": "unknown@example.com", "password": "password123"},
+        data={"username": "unknown@example.com", "password": "password123"},
     )
 
     assert response.status_code == 403

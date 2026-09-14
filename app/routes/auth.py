@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app import schemas,utils,models,oauth2
 from sqlalchemy.orm import Session
 from app.database import get_db
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter(
     tags = ["Authentication"]
@@ -18,12 +19,12 @@ async def register(user:schemas.UserCreate, db: Session = Depends(get_db) ):
     return new_user
 
 @router.post('/login',response_model=schemas.Token)
-async def login(user:schemas.UserLogin, db:Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
+    db_user = db.query(models.User).filter(models.User.email == form_data.username).first()
     if not db_user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail="Invalid Credentials")
-    if not utils.verify(user.password,db_user.password):
+    if not utils.verify(form_data.password,db_user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, 
                             detail="Invalid Credentials") 
     

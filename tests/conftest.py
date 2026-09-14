@@ -69,7 +69,7 @@ def user(client):
 def login(client, email="owner@example.com", password="password123"):
     response = client.post(
         "/login",
-        json={"email": email, "password": password},
+        data={"username": email, "password": password},
     )
     assert response.status_code == 200
     return {"Authorization": f"Bearer {response.json()['access_token']}"}
