@@ -13,6 +13,8 @@ jobs:
     timeout-minutes: 20
     environment:
       name: Testing
+    outputs:
+      image_digest: ${{ steps.build.outputs.digest }}
     env:
       DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
       DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
@@ -70,12 +72,16 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
+        id: build
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/hackathon_management_api:latest
+          platforms: linux/amd64
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/hackathon_management_api:latest
+            ${{ secrets.DOCKER_USERNAME }}/hackathon_management_api:${{ github.sha }}
 
   CD:
     needs: CI
@@ -85,12 +91,17 @@ jobs:
     environment:
       name: Production
     steps:
-      - name: Trigger Render deployment
+      - name: Trigger Render deployment for the exact image digest
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          IMAGE_DIGEST: ${{ needs.CI.outputs.image_digest }}
         run: |
-          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
-            echo "RENDER_DEPLOY_HOOK_URL is not configured in the Production environment."
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ] || [ -z "$IMAGE_DIGEST" ]; then
+            echo "Render deploy hook URL or Docker image digest is missing."
             exit 1
           fi
-          curl --fail --silent --show-error --request POST "$RENDER_DEPLOY_HOOK_URL"
+          IMAGE_URL="docker.io/$DOCKER_USERNAME/hackathon_management_api@$IMAGE_DIGEST"
+          curl --fail --silent --show-error --get \
+            --data-urlencode "imgURL=$IMAGE_URL" \
+            "$RENDER_DEPLOY_HOOK_URL"
