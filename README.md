@@ -6,8 +6,15 @@
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red.svg)
 ![Alembic](https://img.shields.io/badge/Alembic-Migrations-green.svg)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-success.svg)
+![AWS EC2](https://img.shields.io/badge/Deployment-AWS_EC2-orange.svg)
 
 A production-style backend API built with FastAPI and PostgreSQL for managing hackathons, including team formation, project submissions, voting, and leaderboard generation.
+
+## Live Demo
+
+- **Live API:** [http://16.170.252.54/](http://16.170.252.54/)
+- **Swagger/OpenAPI docs:** [http://16.170.252.54/docs](http://16.170.252.54/docs)
 
 ## Project Goal
 
@@ -72,6 +79,10 @@ This project was built to practice backend engineering concepts beyond basic CRU
 | Migrations | Alembic |
 | Containerization | Docker |
 | Language | Python 3.12 |
+| CI/CD | GitHub Actions |
+| Container Registry | Docker Hub |
+| Cloud Deployment | AWS EC2 |
+| Reverse Proxy | Nginx |
 
 ## Key Concepts Demonstrated
 
@@ -85,6 +96,8 @@ This project was built to practice backend engineering concepts beyond basic CRU
 - Dependency injection with FastAPI
 - Dockerized backend development
 - PostgreSQL service orchestration with Docker Compose
+- Automated testing and CI/CD
+- Cloud deployment using AWS EC2
 
 ## API Endpoints
 
@@ -151,11 +164,13 @@ Docker is the recommended way to run this project because it starts both the Fas
 Create a `.env` file in the project root:
 
 ```env
-DATABASE_URL=postgresql://postgres:1353@postgres:5432/hackathon
+DATABASE_URL=postgresql://postgres:your_password@postgres:5432/hackathon
 SECRET_KEY=your_secret_key
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 ```
+
+Replace the placeholder values with your own credentials. Never commit `.env` files or production secrets to GitHub.
 
 The hostname `postgres` is the database service name defined in `docker-compose.yml`.
 
@@ -191,6 +206,8 @@ Use this only when you want to reset the database completely:
 ```bash
 docker compose down -v
 ```
+
+**Warning:** Removing the database volume permanently deletes the database data stored in that volume.
 
 ## Local Development Without Docker
 
@@ -273,10 +290,15 @@ pytest
 
 ## API Documentation
 
-FastAPI automatically generates interactive API documentation after the server starts:
+FastAPI automatically generates interactive API documentation after the server starts.
 
 - Swagger UI: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 - ReDoc: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+Production documentation:
+
+- Swagger UI: [http://16.170.252.54/docs](http://16.170.252.54/docs)
+- ReDoc: [http://16.170.252.54/redoc](http://16.170.252.54/redoc)
 
 ## Docker Services
 
@@ -287,11 +309,11 @@ FastAPI automatically generates interactive API documentation after the server s
 
 ## Deployment
 
-The application is publicly deployed as a Docker-based Web Service on **Render**, with **Render PostgreSQL** as the production database. Render pulls the prebuilt application image from Docker Hub rather than building the application directly from the GitHub repository.
+The application is deployed on **AWS EC2** using Docker Compose, with Nginx configured as a reverse proxy. GitHub Actions automates testing, Docker image publishing, and deployment to the EC2 instance.
 
 Production architecture:
 
-```
+```text
 Developer
    ↓
 GitHub
@@ -306,21 +328,29 @@ Docker Hub
    ↓
 GitHub Actions CD
    ↓
-Render Deploy Hook
+SSH into AWS EC2
    ↓
-Render
+Pull Latest Docker Image
    ↓
-FastAPI + Render PostgreSQL
+Update API Container
+   ↓
+Nginx
+   ↓
+FastAPI + PostgreSQL
 ```
 
-CI runs on pushes and pull requests. Pull requests run CI and pytest but do not push the production Docker image or trigger deployment. A push to `master` builds and publishes `<DOCKER_USERNAME>/hackathon_management_api:latest` to Docker Hub after CI succeeds, then GitHub Actions triggers the Render Deploy Hook. Failed tests stop the pipeline and prevent production deployment.
+CI runs on pushes and pull requests. Pull requests run CI and pytest but do not publish the production Docker image or trigger deployment. A push to `master` builds and publishes `inaitik1/hackathon_management_api:latest` to Docker Hub after CI succeeds, then GitHub Actions connects to AWS EC2 over SSH and updates the API container.
 
-Database migrations (`alembic upgrade head`) are applied automatically during container startup, before the FastAPI/Uvicorn server starts.
+The deployment process updates the API container while keeping PostgreSQL data in its persistent Docker volume. The production database is not intended to be exposed directly to the public internet.
 
-- **Live API:** [https://hackathon-management-api-sdqt.onrender.com](https://hackathon-management-api-sdqt.onrender.com)
-- **Swagger/OpenAPI docs:** [https://hackathon-management-api-sdqt.onrender.com/docs](https://hackathon-management-api-sdqt.onrender.com/docs)
+### Live Production URLs
 
-This is separate from local development (above), which continues to run via Docker Compose with its own PostgreSQL container.
+- **Live API:** [http://16.170.252.54/](http://16.170.252.54/)
+- **Swagger/OpenAPI docs:** [http://16.170.252.54/docs](http://16.170.252.54/docs)
+
+This is separate from local development, which runs through Docker Compose with its own PostgreSQL container.
+
+**Note:** Database migrations must be applied according to the project's deployment procedure. The documented CI/CD deployment commands pull and recreate the API container; they do not themselves establish that migrations run automatically during startup.
 
 ## Future Improvements
 
@@ -331,5 +361,7 @@ This is separate from local development (above), which continues to run via Dock
 ## Author
 
 **Naitik**
+
+GitHub: [iNaitik](https://github.com/iNaitik)
 
 Built as a backend engineering project to explore FastAPI, PostgreSQL, SQLAlchemy, JWT authentication, Alembic migrations, and Docker-based development.
