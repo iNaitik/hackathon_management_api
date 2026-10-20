@@ -1,8 +1,6 @@
 name: Build and Deploy
 
-on:
-  push:
-  pull_request:
+on: [push, pull_request]
 
 permissions:
   contents: read
@@ -13,8 +11,6 @@ jobs:
     timeout-minutes: 20
     environment:
       name: Testing
-    outputs:
-      image_digest: ${{ steps.build.outputs.digest }}
     env:
       DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
       DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
@@ -35,7 +31,7 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
         options: >-
-          --health-cmd "pg_isready -U ${{ secrets.DATABASE_USERNAME }} -d ${{ secrets.DATABASE_NAME }}"
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -72,16 +68,12 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
-        id: build
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          platforms: linux/amd64
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/hackathon_management_api:latest
-            ${{ secrets.DOCKER_USERNAME }}/hackathon_management_api:${{ github.sha }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/hackathon_management_api:latest
 
   CD:
     needs: CI
@@ -91,17 +83,12 @@ jobs:
     environment:
       name: Production
     steps:
-      - name: Trigger Render deployment for the exact image digest
+      - name: Trigger Render deployment
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          IMAGE_DIGEST: ${{ needs.CI.outputs.image_digest }}
         run: |
-          if [ -z "$RENDER_DEPLOY_HOOK_URL" ] || [ -z "$IMAGE_DIGEST" ]; then
-            echo "Render deploy hook URL or Docker image digest is missing."
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "RENDER_DEPLOY_HOOK_URL is not configured in the Production environment."
             exit 1
           fi
-          IMAGE_URL="docker.io/$DOCKER_USERNAME/hackathon_management_api@$IMAGE_DIGEST"
-          curl --fail --silent --show-error --get \
-            --data-urlencode "imgURL=$IMAGE_URL" \
-            "$RENDER_DEPLOY_HOOK_URL"
+          curl --fail --silent --show-error --request POST "$RENDER_DEPLOY_HOOK_URL"
