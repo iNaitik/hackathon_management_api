@@ -151,13 +151,13 @@ Docker is the recommended way to run this project because it starts both the Fas
 Create a `.env` file in the project root:
 
 ```env
-DATABASE_URL=postgresql://postgres:your_password@postgres:5432/hackathon
+DATABASE_URL=postgresql://postgres:1353@postgres:5432/hackathon
 SECRET_KEY=your_secret_key
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 ```
 
-The hostname `postgres` is the database service name defined in `docker-compose.yml`. Use your own local development credentials and never commit real passwords or production secrets.
+The hostname `postgres` is the database service name defined in `docker-compose.yml`.
 
 ### Build and Start Containers
 
@@ -206,7 +206,7 @@ python -m venv .venv
 
 On Windows:
 
-```powershell
+```bash
 .venv\Scripts\activate
 ```
 
