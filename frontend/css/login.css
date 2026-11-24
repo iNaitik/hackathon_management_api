@@ -1,0 +1,8 @@
+.login-page .hero {
+    grid-template-columns: 1fr;
+    max-width: 760px;
+}
+
+.login-page .hero-content {
+    max-width: 620px;
+}

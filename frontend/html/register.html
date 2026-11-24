@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - HMA</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/register.css">
+</head>
+<body class="register-page">
+    <header class="header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="brand" href="/">HMA</a>
+            <div class="nav-buttons">
+                <a href="./login.html" class="login-button">Login</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <span class="eyebrow">Join the HMA community</span>
+                <h1>Create your account</h1>
+                <p>Sign up to manage hackathons, form teams, and track submissions with ease.</p>
+                <form id="registerForm" class="register-form">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit" class="primary-button">Register</button>
+                </form>
+            </div>
+            <div class="register-illustration" aria-hidden="true">
+                <img src="../assets/hma_hackathon_illustration.png" alt="">
+            </div>
+        </section>
+    </main>
+    <script type="module" src="../js/scripts.js"></script>
+</body>
+</html>

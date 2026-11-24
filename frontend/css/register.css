@@ -1,0 +1,69 @@
+.register-page .hero {
+    grid-template-columns: 1.05fr 0.95fr;
+}
+
+.register-page .hero-content {
+    max-width: 600px;
+}
+
+.register-illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-form {
+    display: grid;
+    gap: 10px;
+}
+
+.register-form label {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.register-form input {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--text);
+    font: inherit;
+}
+
+.register-form input:focus {
+    outline: 2px solid rgba(37, 99, 235, 0.18);
+    border-color: var(--primary);
+}
+
+.register-form .primary-button {
+    width: 100%;
+    margin-top: 10px;
+    border: 0;
+    cursor: pointer;
+}
+
+.register-illustration img {
+    width: 100%;
+    max-width: 650px;
+    height: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 850px) {
+    .register-page .hero {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .register-page .hero-content {
+        max-width: 620px;
+    }
+
+    .register-illustration img {
+        max-width: 520px;
+    }
+}
