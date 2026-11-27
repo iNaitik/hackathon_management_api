@@ -32,7 +32,7 @@ async def create_Hackathon(hack: schemas.HackathonCreate, db:Session = Depends(g
     db.refresh(new_hackathon)
     return new_hackathon
 
-@router.post("/hackathons/{id}/register", response_model = schemas.HackathonRegistration)
+@router.post("/hackathons/{id}/register", response_model = schemas.HackathonRegistration,status_code=status.HTTP_201_CREATED)
 async def register_hackathon(id:int,db:Session = Depends(get_db),
                              current_user = Depends(oauth2.get_current_user)):
     hackathon = db.query(models.Hackathon).filter(models.Hackathon.id == id).first()
@@ -52,3 +52,16 @@ async def register_hackathon(id:int,db:Session = Depends(get_db),
     db.commit()
     db.refresh(new_registration)
     return new_registration
+
+@router.get("/hackathons/{id}/registration")
+async def check_registration(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user = Depends(oauth2.get_current_user)
+):
+    registration = db.query(models.Hackathon_registration).filter(
+        models.Hackathon_registration.user_id == current_user.id,
+        models.Hackathon_registration.hackathon_id == id
+    ).first()
+
+    return {"registered": registration is not None}

@@ -63,6 +63,7 @@
     font-size: clamp(36px, 6vw, 52px);
     line-height: 1.1;
     letter-spacing: -2px;
+    overflow-wrap: anywhere;
 }
 
 .description {
@@ -71,6 +72,7 @@
     color: var(--muted);
     font-size: 16px;
     line-height: 1.7;
+    overflow-wrap: anywhere;
 }
 
 .event-facts {
@@ -103,7 +105,9 @@
 }
 
 .fact strong {
+    min-width: 0;
     font-size: 15px;
+    overflow-wrap: anywhere;
 }
 
 .details-body {
@@ -156,11 +160,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 16px 20px;
     padding: 22px;
     border: 1px solid #dfe7ff;
     border-radius: 12px;
     background: #f7f9ff;
+}
+
+.join-card > div {
+    flex: 1 1 240px;
 }
 
 .join-card h2 {
@@ -169,6 +178,26 @@
 
 .join-card .primary-button {
     flex-shrink: 0;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.join-card .primary-button[hidden] {
+    display: none;
+}
+
+.registration-status {
+    width: 100%;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.registration-status:empty {
+    display: none;
 }
 
 @media (max-width: 600px) {

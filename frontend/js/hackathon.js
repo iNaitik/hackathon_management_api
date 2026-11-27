@@ -145,3 +145,98 @@ function displayHackathonDetails(hackathon) {
         }
     }
 }
+
+
+export async function registerForHackathon(hackathonId) {
+    const registerButton = document.getElementById("registerButton");
+    const registrationMessage = document.getElementById("registrationMessage");
+    const joinTeamBtn = document.getElementById("joinTeamBtn");
+
+    if (!registerButton || !registrationMessage || !joinTeamBtn) {
+        console.error("Registration elements not found.");
+        return;
+    }
+
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+        registrationMessage.textContent = "Please log in to register.";
+        return;
+    }
+
+    registerButton.disabled = true;
+    registerButton.textContent = "Registering...";
+
+    try {
+        const response = await fetch(
+            `${BASE_URL}/hackathons/${hackathonId}/register`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json().catch(() => ({}));
+
+        console.log("Status:", response.status);
+        console.log("Data:", data);
+
+        if (response.ok) {
+            registrationMessage.textContent = "Successfully registered!";
+            registerButton.hidden = true;
+            joinTeamBtn.hidden = false;
+        }
+        else if (response.status === 409) {
+            registrationMessage.textContent = "You are already registered.";
+            registerButton.hidden = true;
+            joinTeamBtn.hidden = false;
+        }
+        else if (response.status === 401 || response.status === 403) {
+            registrationMessage.textContent = "Please log in again.";
+            registerButton.disabled = false;
+            registerButton.textContent = "Register";
+        }
+        else {
+            registrationMessage.textContent = data.detail || "Registration failed.";
+            registerButton.disabled = false;
+            registerButton.textContent = "Register";
+        }
+
+    } catch (error) {
+        console.error("Registration error:", error);
+
+        registrationMessage.textContent =
+            "An error occurred. Please try again.";
+
+        registerButton.disabled = false;
+        registerButton.textContent = "Register";
+    }
+}
+
+
+export async function checkRegistration(hackathonId) {
+    const response = await fetch(
+        `${BASE_URL}/hackathons/${hackathonId}/registration`,
+        {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Could not check registration");
+    }
+
+    const data = await response.json();
+
+    const registerButton = document.getElementById("registerButton");
+    const joinTeamBtn = document.getElementById("joinTeamBtn");
+
+    if (data.registered) {
+        registerButton.hidden = true;
+        joinTeamBtn.hidden = false;
+    }
+}
