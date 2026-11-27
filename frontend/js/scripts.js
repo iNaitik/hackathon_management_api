@@ -1,9 +1,22 @@
-import {registerUser} from "./auth.js";
+import {registerUser, loginUser} from "./auth.js";
+import {getHackathons, getHackathonDetails} from "./hackathon.js";
 
-const primaryButton = document.getElementsByClassName("primary-button");
-primaryButton[0].addEventListener("click", async function(event) {
-    console.log("Primary button clicked");
-    event.preventDefault(); // Prevent the default form submission which would reload the page
-    console.log("Calling registerUser function");
-    await registerUser(); // Call the registerUser function
-});
+getHackathons(); // Fetch and display hackathons on page load
+getHackathonDetails(); // Fetch and display hackathon details if on the details page
+
+const registerForm = document.getElementById("registerForm");
+if (registerForm) {
+    registerForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        await registerUser();
+    });
+}
+
+const loginForm = document.getElementById("loginForm");
+if (loginForm) {
+    loginForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        await loginUser();
+    });
+}
+

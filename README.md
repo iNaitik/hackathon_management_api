@@ -170,6 +170,13 @@ This starts:
 - FastAPI application on `http://127.0.0.1:8000`
 - PostgreSQL database on port `5432`
 
+### Generate Migrations
+
+Example run:
+```bash
+docker compose exec api alembic revision --autogenerate -m "create events table"
+```
+
 ### Run Database Migrations
 
 In a separate terminal, run:

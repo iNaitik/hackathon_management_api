@@ -32,12 +32,18 @@ class HackathonOut(BaseModel):
     description: str
     created_by: int
     created_at: datetime
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True) 
 
 class HackathonCreate(BaseModel):
     title: str
     description: str
 
+class HackathonRegistration(BaseModel):
+    user_id: int
+    hackathon_id: int
+    registered_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 # Teams
 class TeamCreate(BaseModel):
@@ -80,3 +86,5 @@ class LeaderboardOut(BaseModel):
     team_name: str
     avg_score: float
     vote_count: int
+
+    model_config = ConfigDict(from_attributes=True)

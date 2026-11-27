@@ -220,3 +220,6 @@ a {
         width: 100%;
     }
 }
+.hackathon-list{
+    cursor: pointer;
+}

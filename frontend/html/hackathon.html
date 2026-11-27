@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse hackathons and find your next event.">
     <title>HMA - Hackathons</title>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/hackathon.css">
@@ -10,9 +11,9 @@
 <body class="hackathon-page">
     <header class="header">
         <nav class="navbar" aria-label="Main navigation">
-            <a class="brand" href="/">HMA</a>
+            <a class="brand" href="./index.html">HMA</a>
             <ul class="nav-links">
-                <li><a href="/">Home</a></li>
+                <li><a href="./index.html">Home</a></li>
                 <li><a class="active" href="./hackathon.html">Hackathons</a></li>
                 <li><a href="./team.html">Teams</a></li>
                 <li><a href="./leaderboard.html">Leaderboard</a></li>
@@ -24,20 +25,19 @@
         </nav>
     </header>
     <main>
-        <section class="hero">
+        <section class="hero hackathon-hero" aria-labelledby="hackathonHeading">
             <div class="hero-content">
-                <span class="eyebrow">Upcoming events</span>
-                <h1>Discover hackathons.</h1>
-                <p>Find an event, register your team, and start building your next project.</p>
-                <div class="hero-actions">
-                    <a href="./register.html" class="primary-button">Join a hackathon</a>
-                    <a href="./index.html" class="secondary-button">Back to home</a>
-                </div>
-                <div class="register-illustration">
-                    <img src="../assets/hma_hackathon_illustration.png" alt="Team collaborating at a hackathon">
-                </div>
+                <span class="eyebrow">Explore upcoming events</span>
+                <h1 id="hackathonHeading">Discover hackathons.</h1>
+                <p>Browse events, find a challenge that inspires you, and start building with your team.</p>
             </div>
+
+            <section class="hackathon-listing" aria-label="Hackathon listings">
+                <p class="hackathon-status" id="statusMessage"></p>
+                <div class="hackathon-list" id="hackathonList"></div>
+            </section>
         </section>
     </main>
+    <script type="module" src="../js/scripts.js"></script>
 </body>
 </html>

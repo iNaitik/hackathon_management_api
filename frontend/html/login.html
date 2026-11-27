@@ -22,12 +22,18 @@
                 <span class="eyebrow">Welcome back</span>
                 <h1>Login to HMA.</h1>
                 <p>Sign in to manage your teams, submissions, and hackathons.</p>
-                <div class="hero-actions">
-                    <a href="./index.html" class="secondary-button">Back to home</a>
-                </div>
+                <form id="loginForm" class="login-form">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="username" autocomplete="email" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password" required>
+
+                    <button type="submit" class="primary-button" id="loginButton">Log in</button>
+                </form>
             </div>
         </section>
     </main>
-    <script src="../js/script.js"></script>
+    <script type="module" src="../js/scripts.js"></script>
 </body>
 </html>

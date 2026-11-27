@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Details for the Build for Good hackathon.">
+    <title>Build for Good - Hackathon Details</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/hackathon-details.css">
+</head>
+<body class="hackathon-details-page">
+    <header class="header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a class="brand" href="./index.html">HMA</a>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a class="active" href="./hackathon.html">Hackathons</a></li>
+                <li><a href="./team.html">Teams</a></li>
+                <li><a href="./leaderboard.html">Leaderboard</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="./login.html" class="login-button">Login</a>
+                <a href="./register.html" class="register-button">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="details-main">
+        <a class="back-link" href="./hackathon.html">← Back to hackathons</a>
+        <p class="details-status" id="statusMessage" role="status"></p>
+
+        <section class="details-card" aria-labelledby="hackathonTitle">
+            <div class="details-heading">
+                <span class="event-badge">Hackathon</span>
+                <p class="eyebrow" id="hackathonEyebrow">HACKATHON</p>
+                <h1 id="hackathonTitle">Loading hackathon...</h1>
+                <p class="description" id="hackathonDescription">
+                    Loading hackathon details.
+                </p>
+            </div>
+
+            <div class="event-facts" aria-label="Event information">
+                <div class="fact">
+                    <span class="fact-label">Created</span>
+                    <strong id="hackathonDates">Not specified</strong>
+                </div>
+                <div class="fact">
+                    <span class="fact-label">Location</span>
+                    <strong id="hackathonLocation">Not specified</strong>
+                </div>
+                <div class="fact">
+                    <span class="fact-label">Team size</span>
+                    <strong id="hackathonTeamSize">Not specified</strong>
+                </div>
+                <div class="fact">
+                    <span class="fact-label">Created by</span>
+                    <strong id="hackathonCreatedBy">Not specified</strong>
+                </div>
+            </div>
+
+            <div class="details-body">
+                <section aria-labelledby="challengeTitle">
+                    <h2 id="challengeTitle">The challenge</h2>
+                    <p id="hackathonChallenge">Loading the hackathon challenge.</p>
+                </section>
+                <section aria-labelledby="scheduleTitle">
+                    <h2 id="scheduleTitle">Schedule</h2>
+                    <ul class="schedule-list" id="hackathonSchedule">
+                        <li><time id="hackathonCreatedTime">--</time><span>Hackathon created</span></li>
+                    </ul>
+                </section>
+                <aside class="join-card">
+                    <div>
+                        <h2>Ready to take part?</h2>
+                        <p>Create a team or join an existing one to participate in the hackathon.</p>
+                    </div>
+                    <a class="primary-button" href="./team.html">Join Team</a>
+                </aside>
+            </div>
+        </section>
+    </main>
+    <script type="module" src="../js/scripts.js"></script>
+</body>
+</html>

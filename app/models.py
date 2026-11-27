@@ -18,6 +18,12 @@ class Hackathon(Base):
     created_by = Column (Integer,ForeignKey("users.id",ondelete="CASCADE"), nullable=False)
     created_at = Column(TIMESTAMP(timezone=True),nullable=False,server_default=text('now()'))
 
+class Hackathon_registration(Base):
+    __tablename__ = "hackathon_registrations"
+
+    user_id = Column(Integer,ForeignKey("users.id",ondelete = "CASCADE"),primary_key=True)
+    hackathon_id = Column(Integer, ForeignKey("hackathons.id",ondelete="CASCADE"),primary_key=True)
+    registered_at = Column(TIMESTAMP(timezone=True),nullable=False,server_default=text('now()'))
 
 class Team(Base):
     __tablename__ = "teams"
@@ -27,6 +33,7 @@ class Team(Base):
     hackathon_id = Column(Integer,ForeignKey("hackathons.id",ondelete="CASCADE"),nullable=False)
     created_at = Column(TIMESTAMP(timezone=True),nullable=False,server_default=text('now()'))
     capacity = Column(Integer, nullable=False, default=1)
+
 class Team_Member(Base):
     __tablename__ = "team_members"
     
